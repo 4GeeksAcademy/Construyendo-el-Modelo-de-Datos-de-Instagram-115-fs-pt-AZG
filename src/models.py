@@ -15,8 +15,8 @@ class User(db.Model):
     lastname: Mapped[str] = mapped_column(String(100), nullable=False)
     email: Mapped[str] = mapped_column(
         String(120), unique=True, nullable=False)
-    password: Mapped[str] = mapped_column(nullable=False)
-##relass##
+    password: Mapped[int] = mapped_column(nullable=False)
+## relass##
     comments: Mapped[List["Comment"]] = relationship(back_populates="user")
     posts: Mapped[List["Post"]] = relationship(back_populates="user")
 
@@ -37,7 +37,7 @@ class Media (db.Model):
     type: Mapped[str] = mapped_column(String(20), nullable=False)
     url: Mapped[str] = mapped_column(String(255), nullable=False)
     post_id: Mapped[int] = mapped_column(ForeignKey('post.id'), nullable=False)
-#realacions###
+# realacions###
     post: Mapped["Post"] = relationship(back_populates="medias")
 
     def serialize(self):
@@ -53,10 +53,12 @@ class Post (db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey('user.id'), nullable=False)
 
-#relaciones##
-    user: Mapped["User"] = relationship(back_populates="posts")  ##relacion de vuelta al user
-    medias: Mapped[List["Media"]] = relationship(back_populates="post")  ##too
-    comments: Mapped[List["Comment"]] = relationship(back_populates="post")   ##too
+# relaciones##
+    user: Mapped["User"] = relationship(
+        back_populates="posts")  # relacion de vuelta al user
+    medias: Mapped[List["Media"]] = relationship(back_populates="post")  # too
+    comments: Mapped[List["Comment"]] = relationship(
+        back_populates="post")  # too
 
     def serialize(self):
         return {
